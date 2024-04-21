@@ -10,7 +10,7 @@ import time,os,json,getopt,signal
 
 import sys
 sys.path.append(os.path.dirname(__file__) + '/pyenergenie/src')
-from energenie import OpenThings, Devices, Messages, radio
+from energenie import OpenThings, Devices, radio
 
 directory = {"__META": {"time": int(time.time())}}
 outputFile = None
@@ -67,7 +67,7 @@ def dumpDirectory():
 
 def send_join_ack(mfrid, productid, sensorid):
     # send back a JOIN ACK, so that join light stops flashing
-    response = OpenThings.alterMessage(Messages.JOIN_ACK,
+    response = OpenThings.alterMessage(Devices.JOIN_ACK,
         header_mfrid=mfrid,
         header_productid=productid,
         header_sensorid=sensorid)
@@ -81,7 +81,7 @@ def monitor_loop():
     radio.receiver()
 
     while True:
-        if radio.isReceiveWaiting():
+        if radio.is_receive_waiting():
             payload = radio.receive()
             try:
                 decoded = OpenThings.decode(payload)
