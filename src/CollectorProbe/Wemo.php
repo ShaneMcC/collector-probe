@@ -25,6 +25,8 @@ class Wemo extends AbstractProbe {
 	public function getDevices() {
         $ssdp = new \SSDP($this->discoveryIPs);
 
+        $knownSerials = [];
+
         foreach ($ssdp->search($this->insightService, $this->ssdpTimeout, $this->allowUnicastDiscovery) as $device) {
             $loc = @file_get_contents($device['location']);
 			$xml = simplexml_load_string($loc);
@@ -35,6 +37,9 @@ class Wemo extends AbstractProbe {
 			$dev['serial'] = (String)$xml->device->serialNumber;
             $dev['datasource'] = ['type' => 'wemo-ssdp', 'ip' => $device['__IP'], 'port' => $device['__PORT'], 'device' => $device, 'xml' => $xml];
 			$dev['data'] = array();
+
+            if (isset($knownSerials[$dev['serial']])) { continue; }
+            $knownSerials[$dev['serial']] = true;
 
             yield $dev;
         }
