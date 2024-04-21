@@ -1,15 +1,15 @@
 <?php
 
-    function getEnvOrDefault($var, $default) {
-        $result = getEnv($var);
-        return $result === FALSE ? $default : $result;
-    }
+	function getEnvOrDefault($var, $default) {
+		$result = getEnv($var);
+		return $result === FALSE ? $default : $result;
+	}
 
-    $autoloader = require_once(__DIR__ . '/vendor/autoload.php');
+	$autoloader = require_once(__DIR__ . '/vendor/autoload.php');
 
-    require_once(__DIR__ . '/src/cliparams.php');
+	require_once(__DIR__ . '/src/cliparams.php');
 
-    require_once(__DIR__ . '/config.php');
+	require_once(__DIR__ . '/config.php');
 
 	function curl_get_contents($url) {
 		$ch = curl_init($url);

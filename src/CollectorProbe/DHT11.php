@@ -3,9 +3,9 @@
 namespace CollectorProbe;
 
 class DHT11 extends AbstractProbe {
-    public function __construct() { }
+	public function __construct() { }
 
-    public function getDevices() {
+	public function getDevices() {
 		foreach (glob('/sys/bus/iio/devices/iio:*/') as $basedir) {
 			$name = str_replace('@', '_', trim(file_get_contents($basedir . '/name')));
 
@@ -30,10 +30,10 @@ class DHT11 extends AbstractProbe {
 		$basedir = $dev['datasource']['basedir'];
 		unset($dev['datasource']['basedir']);
 
-        foreach (glob($basedir . '/' . '*_input') as $sensor) {
-            $sensorName = preg_replace('#^in_(.*)_input$#', '\1', basename($sensor));
-            $sensorValue = trim(file_get_contents($sensor));
-            $dev['data'][$sensorName] = $sensorValue;
-        }
-    }
+		foreach (glob($basedir . '/' . '*_input') as $sensor) {
+			$sensorName = preg_replace('#^in_(.*)_input$#', '\1', basename($sensor));
+			$sensorValue = trim(file_get_contents($sensor));
+			$dev['data'][$sensorName] = $sensorValue;
+		}
+	}
 }

@@ -22,16 +22,16 @@
 	$dataDir = dirname(__FILE__) . '/data/';
 
 	/** Probes to enable */
-    $probes = [];
+	$probes = [];
 
 	/** Collect from local 1wire probes */
-    $probes[] = new \CollectorProbe\OneWire();
+	$probes[] = new \CollectorProbe\OneWire();
 
 	/** Collect from local DHT11 probes */
-    $probes[] = new \CollectorProbe\DHT11();
+	$probes[] = new \CollectorProbe\DHT11();
 
 	/** Collect from MiTemperature devices */
-    $probes[] = new \CollectorProbe\MiTemperature();
+	$probes[] = new \CollectorProbe\MiTemperature();
 
 	/** Collect from local Energenie devices using EngergenieListen */
 	$probes[] = new \CollectorProbe\EnergenieListen();

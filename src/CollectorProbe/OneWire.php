@@ -3,10 +3,10 @@
 namespace CollectorProbe;
 
 class OneWire extends AbstractProbe {
-    public function __construct() {
-    }
+	public function __construct() {
+	}
 
-    public function getDevices() {
+	public function getDevices() {
 		foreach (glob('/sys/bus/w1/devices/28-*') as $basedir) {
 			$name = trim(file_get_contents($basedir . '/name'));
 			$serial = preg_replace('#.*-(.*)$#', '\1', $name);
@@ -55,5 +55,5 @@ class OneWire extends AbstractProbe {
 				}
 			}
 		}
-    }
+	}
 }

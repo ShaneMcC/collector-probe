@@ -30,18 +30,18 @@
 
 	if (!isset($daemon['cli']['post'])) {
 
-        foreach ($probes as $probe) {
-            foreach ($probe->getDevices() as $dev) {
-                echo sprintf('Found: %s [%s] (%s)' . "\n", $dev['name'], $dev['serial'], $probe->getDataSource($dev));
+		foreach ($probes as $probe) {
+			foreach ($probe->getDevices() as $dev) {
+				echo sprintf('Found: %s [%s] (%s)' . "\n", $dev['name'], $dev['serial'], $probe->getDataSource($dev));
 
-                if (isset($daemon['cli']['search'])) { continue; }
-                $probe->getDeviceData($dev['data']);
+				if (isset($daemon['cli']['search'])) { continue; }
+				$probe->getDeviceData($dev['data']);
 
-                if (!empty($dev['data'])) {
-                    $devices[] = $dev;
-                }
-            }
-        }
+				if (!empty($dev['data'])) {
+					$devices[] = $dev;
+				}
+			}
+		}
 
 		if (function_exists('collectCustomSensorData')) {
 			collectCustomSensorData($devices);

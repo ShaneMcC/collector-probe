@@ -176,4 +176,3 @@
 
 		return (isset($__daemontools['cli']['parsed'])) ? $__daemontools['cli']['parsed'] : array();
 	}
-?>

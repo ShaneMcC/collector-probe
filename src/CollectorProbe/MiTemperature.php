@@ -3,13 +3,13 @@
 namespace CollectorProbe;
 
 class MiTemperature extends AbstractProbe {
-    private $dataPath;
+	private $dataPath;
 
-    public function __construct($dataPath = '/run/MiTemp2') {
-        $this->dataPath = $dataPath;
-    }
+	public function __construct($dataPath = '/run/MiTemp2') {
+		$this->dataPath = $dataPath;
+	}
 
-    public function getDevices() {
+	public function getDevices() {
 		foreach (glob($this->dataPath . '/' . '*.json') as $dataFile) {
 			$mtime = filemtime($dataFile);
 			if ($mtime < (time() - 120)) { continue; } // Ignore stale files.
@@ -33,6 +33,6 @@ class MiTemperature extends AbstractProbe {
 			}
 		}
 
-        return [];
-    }
+		return [];
+	}
 }
