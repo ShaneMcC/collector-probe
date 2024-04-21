@@ -146,7 +146,9 @@ class Hue extends AbstractProbe {
                 }
             }
 
-            yield $dev;
+            if (!empty($dev['data'])) {
+                yield $dev;
+            }
         }
 
         return [];
