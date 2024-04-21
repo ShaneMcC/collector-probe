@@ -1,3 +1,6 @@
 [submodule "helpers/energenie/pyenergenie"]
 	path = helpers/energenie/pyenergenie
 	url = https://github.com/whaleygeek/pyenergenie
+[submodule "helpers/mitemperature/MiTemperature2"]
+	path = helpers/mitemperature/MiTemperature2
+	url = https://github.com/JsBergbau/MiTemperature2
