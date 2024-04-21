@@ -33,6 +33,9 @@
 	/** Collect from MiTemperature devices */
 	$probes[] = new \CollectorProbe\MiTemperature();
 
+	/** Collect from Wemo devices */
+	$probes[] = new \CollectorProbe\Wemo();
+
 	/** Collect from local Energenie devices using EngergenieListen */
 	$probes[] = new \CollectorProbe\EnergenieListen();
 
