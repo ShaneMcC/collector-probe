@@ -9,7 +9,7 @@ class Tasmota extends AbstractProbe {
 
 	public function __construct($device, $options = []) {
 		$this->device = $device;
-		$this->options = $options;
+		$this->options = is_array($options) ? $options : [];
 	}
 
 	public function getDevices() {

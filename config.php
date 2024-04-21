@@ -31,12 +31,14 @@
 	$probes[] = new \CollectorProbe\DHT11();
 
 	/** Collect from MiTemperature devices */
-	$probes[] = new \CollectorProbe\MiTemperature();
+	/** This requires an appropraite helper running to provide data. */
+	// $probes[] = new \CollectorProbe\MiTemperature();
 
 	/** Collect from Wemo devices */
 	$probes[] = new \CollectorProbe\Wemo();
 
 	/** Collect from local Energenie devices using EngergenieListen */
+	/** This requires an appropriate helper running to provide data. */
 	$probes[] = new \CollectorProbe\EnergenieListen();
 
 	/** Phillips Hue Data Collection. */
@@ -50,9 +52,25 @@
 	/** If the device has a zigbee bridge, that can be collected from by passing 'zigbee' => true to the options array */
 	$probes[] = new \CollectorProbe\Tasmota('192.168.1.7', ['username' => 'someuser', 'password' => 'somepassword', 'zigbee' => true]);
 
-
 	if (file_exists(dirname(__FILE__) . '/config.user.php')) {
 		require_once(dirname(__FILE__) . '/config.user.php');
+	}
+
+	// Support for old variable names.
+	if (isset($hueDevices) && !empty($hueDevices)) {
+		foreach ($hueDevices as $ip => $options) {
+			$probes[] = new \CollectorProbe\Hue($ip, $options);
+		}
+	}
+	if (isset($tasmotaDevices) && !empty($tasmotaDevices)) {
+		foreach ($tasmotaDevices as $ip => $options) {
+			$probes[] = new \CollectorProbe\Tasmota($ip, $options);
+		}
+	}
+	if (isset($awairDevices) && !empty($awairDevices)) {
+		foreach (array_keys($awairDevices) as $ip) {
+			$probes[] = new \CollectorProbe\Awair($ip);
+		}
 	}
 
 	if (!function_exists('afterProbeAction')) {
