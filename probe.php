@@ -35,7 +35,7 @@
 				echo sprintf('Found: %s [%s] (%s)' . "\n", $dev['name'], $dev['serial'], $probe->getDataSource($dev));
 
 				if (isset($daemon['cli']['search'])) { continue; }
-				$probe->getDeviceData($dev['data']);
+				$probe->getDeviceData($dev);
 
 				if (!empty($dev['data'])) {
 					$devices[] = $dev;
