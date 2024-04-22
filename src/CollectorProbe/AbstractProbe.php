@@ -31,6 +31,6 @@ abstract class AbstractProbe {
 	 * Return a string representing the datasource of the given sensor.
 	 */
 	public function getDataSource($sensor) {
-		return $sensor['datasource']['type'];
+		return $sensor['datasource']['type'] ?? get_class($this);
 	}
 }

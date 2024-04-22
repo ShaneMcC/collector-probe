@@ -3,6 +3,9 @@
 	/** This location. */
 	$location = 'Home';
 
+	/** This Probename (if non-empty, this is added as a tag to all submitted data). */
+	$probeName = '';
+
 	/** Submission Key. */
 	$submissionKey = 'SomePassword';
 
