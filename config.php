@@ -3,8 +3,11 @@
 	/** This location. */
 	$location = 'Home';
 
-	/** This Probename (if non-empty, this is added as a tag to all submitted data). */
+	/** This Probename (if non-empty, this is added as a tag to all submitted data when $extraTags is true). */
 	$probeName = '';
+
+	/** Include extra tags with data to show datasource information */
+	$extraTags = True;
 
 	/** Submission Key. */
 	$submissionKey = 'SomePassword';

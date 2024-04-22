@@ -29,7 +29,7 @@
 	$devices = array();
 
 	function processProbe($probeid) {
-		global $probes, $daemon, $probeName;
+		global $probes, $daemon, $probeName, $extraTags;
 		$probe = $probes[$probeid];
 
 		$devices = [];
@@ -37,11 +37,15 @@
 		foreach ($probe->getDevices() as $dev) {
 			echo sprintf('Found: %s [%s] (%s)' . "\n", $dev['name'], $dev['serial'], $probe->getDataSource($dev));
 
-			if (!isset($dev['tags'])) { $dev['tags'] = []; }
-			if (isset($probeName) && !empty($probeName)) { $dev['tags']['probe'] = $probeName; }
-			$dev['tags']['datasourceprobe'] = get_class($probe);
-			$dev['tags']['datasourcetype'] = $dev['datasource']['type'] ?? $dev['tags']['datasourceprobe'];
-			$dev['tags']['datasource'] = $probe->getDataSource($dev);
+			if ($extraTags) {
+				if (!isset($dev['tags'])) { $dev['tags'] = []; }
+				if (isset($probeName) && !empty($probeName)) { $dev['tags']['probe'] = $probeName; }
+				$dev['tags']['datasourceprobe'] = get_class($probe);
+				$dev['tags']['datasourcetype'] = $dev['datasource']['type'] ?? $dev['tags']['datasourceprobe'];
+				$dev['tags']['datasource'] = $probe->getDataSource($dev);
+			} else {
+				unset($dev['tags']);
+			}
 
 			if (isset($daemon['cli']['search'])) { continue; }
 			$probe->getDeviceData($dev);
