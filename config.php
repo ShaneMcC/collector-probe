@@ -21,6 +21,9 @@
 	/** Data storage directory. */
 	$dataDir = dirname(__FILE__) . '/data/';
 
+	/** Run each probe as a separate thread? */
+	$useProbeThreads = true;
+
 	/** Probes to enable */
 	$probes = [];
 
@@ -31,7 +34,7 @@
 	$probes[] = new \CollectorProbe\DHT11();
 
 	/** Collect from MiTemperature devices */
-	/** This requires an appropraite helper running to provide data. */
+	/** This requires an appropriate helper running to provide data. */
 	// $probes[] = new \CollectorProbe\MiTemperature();
 
 	/** Collect from Wemo devices */

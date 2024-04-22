@@ -28,18 +28,63 @@
 
 	$devices = array();
 
+	function processProbe($probeid) {
+		global $probes, $daemon;
+		$probe = $probes[$probeid];
+
+		$devices = [];
+
+		foreach ($probe->getDevices() as $dev) {
+			echo sprintf('Found: %s [%s] (%s)' . "\n", $dev['name'], $dev['serial'], $probe->getDataSource($dev));
+
+			if (isset($daemon['cli']['search'])) { continue; }
+			$probe->getDeviceData($dev);
+
+			if (!empty($dev['data'])) {
+				$devices[] = $dev;
+			}
+		}
+
+		return $devices;
+	}
+
 	if (!isset($daemon['cli']['post'])) {
 
-		foreach ($probes as $probe) {
-			foreach ($probe->getDevices() as $dev) {
-				echo sprintf('Found: %s [%s] (%s)' . "\n", $dev['name'], $dev['serial'], $probe->getDataSource($dev));
+		$probeDevices = [];
+		$runningThreads = [];
+		$useProbeThreads = $useProbeThreads && FakeThread::available();
 
-				if (isset($daemon['cli']['search'])) { continue; }
-				$probe->getDeviceData($dev);
+		foreach (array_keys($probes) as $probeid) {
+			if ($useProbeThreads) {
+				$thread = new FakeThread('processProbe');
+				$thread->start($probeid);
+				$runningThreads["process-{$probeid}"] = ['thread' => $thread, 'probeid' => $probeid, 'type' => 'process'];
+			} else {
+				$probeDevices[] = processProbe($probeid);
+			}
+		}
 
-				if (!empty($dev['data'])) {
-					$devices[] = $dev;
+		if ($useProbeThreads) {
+			set_time_limit(0);
+			while (count($runningThreads) > 0) {
+				$currentThreads = $runningThreads;
+				foreach ($currentThreads as $name => $t) {
+					if (!$t['thread']->isAlive()) {
+						unset($runningThreads[$name]);
+
+						if ($t['type'] == 'process') {
+							$probeDevices[] = $t['thread']->getData();
+						}
+					}
 				}
+				// Sleep for 10ms
+				usleep(100000);
+			}
+		}
+
+		foreach ($probeDevices as $deviceResults) {
+			foreach ($deviceResults as $device) {
+				$devices[] = $device;
 			}
 		}
 
