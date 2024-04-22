@@ -109,6 +109,6 @@ class Tasmota extends AbstractProbe {
 	}
 
 	public function getDataSource($sensor) {
-		return $sensor['datasource']['type'] . (isset($sensor['datasource']['bridge']) ? ' - ' . $sensor['datasource']['bridge'] : '');
+		return $sensor['datasource']['type'] . (isset($sensor['datasource']['bridge']) ? ' - ' . $sensor['datasource']['bridge'] : '') . (isset($sensor['datasource']['addr']) ? ' - ' . $sensor['datasource']['addr'] : '');
 	}
 }
