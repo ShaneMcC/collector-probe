@@ -60,7 +60,7 @@ class Wemo extends AbstractProbe {
             if (!isset($service->serviceType) || !isset($service->controlURL)) { continue; }
 
             $url = \phpUri::parse($device['location'])->join($service->controlURL);
-            // $dev['services'][(string)$service->serviceType] = $url;
+            $dev['services'][(string)$service->serviceType] = $url;
 
             if ($service->serviceType == $this->insightService) {
                 $url = \phpUri::parse($device['location'])->join($service->controlURL);
