@@ -138,6 +138,11 @@ class Wemo extends AbstractProbe {
                     $dev['data'][$k] = $dev['data'][$v];
                 }
             }
+
+            if (isset($dev['data']['insightParams_state'])) {
+                $dev['data']['powered'] = ($dev['data']['insightParams_state'] > 0) ? 1 : 0;
+            }
+
         }
 	}
 

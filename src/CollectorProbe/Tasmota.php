@@ -21,7 +21,6 @@ class Tasmota extends AbstractProbe {
 		$tasmotaUrl .= http_build_query($baseQueryParams);
 
 		$status0 = json_decode(@file_get_contents($tasmotaUrl . urlencode('Status 0')), true);
-		$tasmotaDev = [];
 
 		$tasmotaEnergyDataValues['voltage'] = ['type' => 'Voltage', 'value' => function($v) { return $v['Voltage']; }]; // Volts
 		$tasmotaEnergyDataValues['current'] = ['type' => 'Current', 'value' => function($v) { return intval($v['Current'] * 1000); }]; // Amps => Milliamps
@@ -40,6 +39,10 @@ class Tasmota extends AbstractProbe {
 			$dev['datasource'] = ['type' => 'tasmota', 'addr' => $this->device];
 			$dev['data'] = [];
 
+			if (isset($status0['Status']['Power'])) {
+				$dev['data']['powered'] = $status0['Status']['Power'];
+			}
+
 			if (isset($status0['StatusSNS']['ENERGY'])) {
 				$sensor = $status0['StatusSNS']['ENERGY'];
 				foreach ($tasmotaEnergyDataValues as $key => $keyInfo) {
@@ -48,7 +51,9 @@ class Tasmota extends AbstractProbe {
 						if ($dev['data'][$key] === null) { unset($dev['data'][$key]); }
 					}
 				}
+			}
 
+			if (!empty($dev['data'])) {
 				yield $dev;
 			}
 		} else {
@@ -72,7 +77,9 @@ class Tasmota extends AbstractProbe {
 			$zbDataValues['open'] = ['type' => 'ZoneStatus', 'value' => function($v) { return ((isset($v['ZoneType']) && $v['ZoneType'] == 0x15) ? (($v['ZoneStatus'] & (1 << 0)) !== 0) : null); }];
 			$zbDataValues['tampered'] = ['type' => 'ZoneStatus', 'value' => function($v) { return ($v['ZoneStatus'] & (1 << 2)) !== 0; }];
 
-			$zbDevices = [];
+			$zbDataValues['voltage'] = ['type' => 'RMSVoltage', 'value' => function($v) { return $v['RMSVoltage']; }]; // Volts
+			$zbDataValues['realpower'] = ['type' => 'ActivePower', 'value' => function($v) { return intval($v['ActivePower'] * 1000); }]; // W to mW
+			$zbDataValues['powered'] = ['type' => 'Power', 'value' => function($v) { return intval($v['Power']); }]; // On or Off.
 
 			foreach ($zigbeeList['ZbStatus1'] as $dev) {
 				$devid = $dev['Device'];
