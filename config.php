@@ -41,7 +41,7 @@
 
 	/** Collect from MiTemperature devices */
 	/** This requires an appropriate helper running to provide data. */
-	// $probes[] = new \CollectorProbe\MiTemperature();
+	$probes[] = new \CollectorProbe\MiTemperature();
 
 	/** Collect from Wemo devices */
 	$probes[] = new \CollectorProbe\Wemo();
@@ -52,14 +52,14 @@
 
 	/** Phillips Hue Data Collection. */
 	/** Need to get an API Key by following https://developers.meethue.com/develop/get-started-2/ */
-	$probes[] = new \CollectorProbe\Hue('192.168.1.5', ['apikey' => '']);
+	// $probes[] = new \CollectorProbe\Hue('192.168.1.5', ['apikey' => '']);
 
 	/** Collect data from Awair Elements devices. */
-	$probes[] = new \CollectorProbe\Awair('192.168.1.6');
+	// $probes[] = new \CollectorProbe\Awair('192.168.1.6');
 
 	/** Collect data from Tasmota devices. */
 	/** If the device has a zigbee bridge, that can be collected from by passing 'zigbee' => true to the options array */
-	$probes[] = new \CollectorProbe\Tasmota('192.168.1.7', ['username' => 'someuser', 'password' => 'somepassword', 'zigbee' => true]);
+	// $probes[] = new \CollectorProbe\Tasmota('192.168.1.7', ['username' => 'someuser', 'password' => 'somepassword', 'zigbee' => true]);
 
 	/** Collect data from Shelly Plus Plug devices. */
 	$probes[] = new \CollectorProbe\Shelly('10.0.0.88');
