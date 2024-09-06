@@ -20,7 +20,7 @@ class Hue extends AbstractProbe {
 		$v1DataValues['temperature'] = ['name' => 'temp', 'value' => function($v) { return $v * 10;} ];
 
 		$v2DataValues = [];
-		$v2DataValues['battery'] = ['type' => 'device_power', 'value' => function($v) { return $v[0]['power_state']['battery_level']; }];
+		$v2DataValues['battery'] = ['type' => 'device_power', 'value' => function($v) { return $v[0]['power_state']['battery_level'] ?? NULL; }];
 
 		$v2DataValues['presence'] = ['type' => 'motion', 'value' => function($v) { return $v[0]['motion']['motion']; }];
 		$v2DataValues['lightlevel'] = ['type' => 'light_level', 'value' => function($v) { return $v[0]['light']['light_level']; }];
@@ -142,7 +142,10 @@ class Hue extends AbstractProbe {
 				if (isset($dev['data'][$key])) { continue; }
 
 				if (isset($sensor['children'][$keyInfo['type']])) {
-					$dev['data'][$key] = call_user_func($keyInfo['value'], $sensor['children'][$keyInfo['type']]);
+					$value = call_user_func($keyInfo['value'], $sensor['children'][$keyInfo['type']]);
+					if ($value != null) {
+						$dev['data'][$key] = $value;
+					}
 				}
 			}
 
