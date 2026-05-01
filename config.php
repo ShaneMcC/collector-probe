@@ -62,7 +62,7 @@
 	// $probes[] = new \CollectorProbe\Tasmota('192.168.1.7', ['username' => 'someuser', 'password' => 'somepassword', 'zigbee' => true]);
 
 	/** Collect data from Shelly Plus Plug devices. */
-	$probes[] = new \CollectorProbe\Shelly('10.0.0.88');
+	// $probes[] = new \CollectorProbe\Shelly('192.168.1.8');
 
 	if (file_exists(dirname(__FILE__) . '/config.user.php')) {
 		require_once(dirname(__FILE__) . '/config.user.php');
