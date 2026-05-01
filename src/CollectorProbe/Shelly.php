@@ -33,8 +33,8 @@ class Shelly extends AbstractProbe {
 		$dev['data'] = [];
 
 		// Map power and temperature data with standard units
-		// apower: Watts → milliwatts (multiply by 1000)
-		// temperature.tC: Celsius → millidegrees Celsius (multiply by 1000)
+		// apower: Watts to milliwatts (multiply by 1000)
+		// temperature.tC: Celsius to millidegrees Celsius (multiply by 1000)
 		if (isset($switchStatus['apower'])) {
 			$dev['data']['realpower'] = intval($switchStatus['apower'] * 1000);
 		}
@@ -43,7 +43,7 @@ class Shelly extends AbstractProbe {
 			$dev['data']['temp'] = intval($switchStatus['temperature']['tC'] * 1000);
 		}
 
-		// Power state (output): true/false → 1/0
+		// Power state (output): true/false to 1/0
 		if (isset($switchStatus['output'])) {
 			$dev['data']['powered'] = $switchStatus['output'] ? 1 : 0;
 		}
@@ -51,6 +51,11 @@ class Shelly extends AbstractProbe {
 		// Voltage
 		if (isset($switchStatus['voltage'])) {
 			$dev['data']['voltage'] = floatval($switchStatus['voltage']);
+		}
+
+		// Current: Amps to milliamps
+		if (isset($switchStatus['current'])) {
+			$dev['data']['current'] = intval($switchStatus['current'] * 1000);
 		}
 
 		yield $dev;
